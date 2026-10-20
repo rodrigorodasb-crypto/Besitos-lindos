@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Besitos Solo Para Ti 💖</title>
+    <!-- Tailwind CSS para diseño estilizado y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts para tipografía romántica -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Quicksand', sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+            overflow-x: hidden;
+        }
+
+        .font-romantic {
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Gradient animado de fondo */
+        .bg-romantic {
+            background: linear-gradient(-45deg, #ff9a9e, #fecfef, #feada6, #f3a683);
+            background-size: 400% 400%;
+            animation: gradientBG 12s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Brillo y efectos del Emoji Principal */
+        .kiss-emoji-btn {
+            filter: drop-shadow(0 10px 15px rgba(236, 72, 153, 0.4));
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), filter 0.3s ease;
+        }
+
+        .kiss-emoji-btn:hover {
+            transform: scale(1.08);
+            filter: drop-shadow(0 15px 25px rgba(219, 39, 119, 0.6));
+        }
+
+        .kiss-emoji-btn:active {
+            transform: scale(0.92);
+        }
+
+        /* Animación de pulso continuo cuando está inactivo */
+        .pulse-gentle {
+            animation: pulseGentle 2.5s infinite ease-in-out;
+        }
+
+        @keyframes pulseGentle {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.04); }
+        }
+
+        /* Partículas flotantes dispersadas por clic */
+        .floating-kiss {
+            position: absolute;
+            pointer-events: none;
+            z-index: 50;
+            will-change: transform, opacity;
+            animation: floatAndFade var(--duration) cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes floatAndFade {
+            0% {
+                opacity: 1;
+                transform: translate(0, 0) scale(0.4) rotate(0deg);
+            }
+            50% {
+                opacity: 0.9;
+            }
+            100% {
+                opacity: 0;
+                transform: translate(var(--tx), var(--ty)) scale(var(--scale)) rotate(var(--rot));
+            }
+        }
+
+        /* Estilo para las partículas suaves del fondo */
+        .bg-heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.35);
+            pointer-events: none;
+            animation: floatUp var(--speed) linear infinite;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.6;
+            }
+            80% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-10vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* Animación para el cambio de frases */
+        .phrase-pop {
+            animation: phrasePop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        @keyframes phrasePop {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(15px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+    </style>
+</head>
+<body class="bg-romantic min-h-screen flex flex-col items-center justify-between p-4 relative overflow-hidden text-gray-800">
+
+    <!-- Capa de corazones flotantes sutiles en el fondo -->
+    <div id="bg-particles-container" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <!-- Encabezado / Título principal -->
+    <header class="text-center mt-6 z-10">
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-white drop-shadow-md font-romantic tracking-wide">
+            ¡Envío de Besitos Especiales!
+        </h1>
+        <p class="text-white/90 text-sm sm:text-base mt-1 font-medium drop-shadow-sm">
+            Toca o haz clic en la carita para recibir un beso 💌
+        </p>
+    </header>
+
+    <!-- Contenido Central: Emoji interactivo y Frase -->
+    <main class="flex flex-col items-center justify-center my-auto z-10 w-full max-w-lg">
+        
+        <!-- Emoji Gigante de Carita Tirando un Beso -->
+        <div class="relative my-6 flex items-center justify-center">
+            <!-- Halo de luz suave tras el emoji -->
+            <div class="absolute w-56 h-56 bg-white/30 rounded-full blur-2xl pointer-events-none animate-pulse"></div>
+            
+            <button id="kiss-btn" class="kiss-emoji-btn pulse-gentle text-8xl sm:text-9xl md:text-[11rem] cursor-pointer focus:outline-none transition-all select-none p-4 rounded-full" aria-label="Enviar beso">
+                😘
+            </button>
+        </div>
+
+        <!-- Tarjeta / Contenedor Elegante para Mostrar las Frases Amorosas -->
+        <div class="w-full px-4">
+            <div class="bg-white/70 backdrop-blur-md rounded-3xl p-6 sm:p-8 shadow-xl border border-white/50 text-center min-h-[120px] flex items-center justify-center transition-all duration-300">
+                <p id="quote-text" class="text-2xl sm:text-3xl font-bold font-romantic text-pink-700 leading-relaxed">
+                    ¡Toca la carita para ver un mensaje!
+                </p>
+            </div>
+        </div>
+
+        <!-- Contador de Besos Enviados -->
+        <div class="mt-6 bg-pink-600/20 backdrop-blur-sm border border-pink-500/30 rounded-full px-6 py-2 flex items-center gap-2 text-white font-semibold text-sm sm:text-base shadow-sm">
+            <i class="fa-solid fa-heart text-pink-600 text-lg animate-bounce"></i>
+            <span>Besos enviados: <span id="kiss-count" class="text-pink-900 font-bold text-lg">0</span></span>
+        </div>
+
+    </main>
+
+    <!-- Pie de página romántico -->
+    <footer class="mb-4 text-center z-10 text-white/80 text-xs sm:text-sm font-medium">
+        Hecho con <span class="text-red-500">❤️</span> para alegrar tu día
+    </footer>
+
+    <script>
+        // Lista completa de frases románticas (incluye las previas y las nuevas agregadas)
+        const phrases = [
+            "mis besitos son solo para ti",
+            "tus besitos son los mejores",
+            "besitos llenos de ternura, dulzura y amor",
+            "te adoro",
+            "eres mi bebé de rizos hermosos",
+            "me derrito de amor al verte",
+            "eres lo más lindo de mi vida",
+            "mi corazón es tuyo",
+            "me gustas mucho",
+            "eres mi cielito",
+            "eres mi lugar favorito",
+            "eres mi persona favorita",
+            "eres preciosa",
+            "hermosa",
+            "divina",
+            "única",
+            "dueña de mi corazoncito"
+        ];
+
+        // Emojis requeridos para la lluvia/explosión
+        const kissEmojis = ['💋', '😘', '💖', '💕', '✨'];
+
+        // Elementos del DOM
+        const kissBtn = document.getElementById('kiss-btn');
+        const quoteText = document.getElementById('quote-text');
+        const kissCountEl = document.getElementById('kiss-count');
+        const bgContainer = document.getElementById('bg-particles-container');
+
+        let kissCount = 0;
+        let lastPhraseIndex = -1;
+
+        // Crear corazones flotantes de fondo al iniciar
+        function createBackgroundParticles() {
+            const particleCount = 12;
+            for (let i = 0; i < particleCount; i++) {
+                const heart = document.createElement('div');
+                heart.classList.add('bg-heart');
+                heart.innerHTML = Math.random() > 0.5 ? '💖' : '💕';
+                
+                // Posicionamiento e intervalos aleatorios
+                heart.style.left = `${Math.random() * 100}%`;
+                heart.style.fontSize = `${Math.random() * 20 + 12}px`;
+                heart.style.setProperty('--speed', `${Math.random() * 10 + 8}s`);
+                heart.style.animationDelay = `${Math.random() * 5}s`;
+                
+                bgContainer.appendChild(heart);
+            }
+        }
+
+        // Función para cambiar de frase con efecto animado
+        function updatePhrase() {
+            // Seleccionar una frase diferente a la actual
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * phrases.length);
+            } while (newIndex === lastPhraseIndex && phrases.length > 1);
+            
+            lastPhraseIndex = newIndex;
+
+            // Reiniciar animación del texto
+            quoteText.classList.remove('phrase-pop');
+            // Forzar reflow para reiniciar la animación CSS
+            void quoteText.offsetWidth; 
+            
+            quoteText.textContent = `"${phrases[newIndex]}"`;
+            quoteText.classList.add('phrase-pop');
+        }
+
+        // Crear la explosión con EXACTAMENTE 15 elementos
+        function triggerKissExplosion(originX, originY) {
+            const numParticles = 15; // Exactamente 15 elementos por toque/clic
+
+            for (let i = 0; i < numParticles; i++) {
+                const particle = document.createElement('span');
+                particle.className = 'floating-kiss';
+                
+                // Selección aleatoria de emoji de beso/corazón/destello (💋, 😘, 💖, 💕, ✨)
+                const emoji = kissEmojis[Math.floor(Math.random() * kissEmojis.length)];
+                particle.textContent = emoji;
+
+                // Posición inicial (donde se hace clic/presiona)
+                particle.style.left = `${originX}px`;
+                particle.style.top = `${originY}px`;
+
+                // Generar trayectoria aleatoria
+                const angle = Math.random() * Math.PI * 2; // Ángulo en radianes
+                const distance = Math.random() * 160 + 70; // Distancia del vuelo en px
+                
+                const tx = Math.cos(angle) * distance;
+                const ty = Math.sin(angle) * distance - (Math.random() * 60); // Ligero impulso hacia arriba
+                const scale = Math.random() * 1.1 + 0.8;
+                const rotation = (Math.random() - 0.5) * 360;
+                const duration = Math.random() * 0.8 + 0.9; // Duración entre 0.9s y 1.7s
+
+                // Inyectar variables al CSS de la partícula
+                particle.style.setProperty('--tx', `${tx}px`);
+                particle.style.setProperty('--ty', `${ty}px`);
+                particle.style.setProperty('--scale', scale);
+                particle.style.setProperty('--rot', `${rotation}deg`);
+                particle.style.setProperty('--duration', `${duration}s`);
+                
+                // Tamaño de fuente variado
+                particle.style.fontSize = `${Math.random() * 1.2 + 1.6}rem`;
+
+                document.body.appendChild(particle);
+
+                // Remover la partícula del DOM cuando termina su animación
+                setTimeout(() => {
+                    particle.remove();
+                }, duration * 1000);
+            }
+        }
+
+        // Manejador del evento Clic / Toque
+        function handleKissAction(e) {
+            e.preventDefault();
+
+            // Incrementar contador
+            kissCount++;
+            kissCountEl.textContent = kissCount;
+
+            // Obtener el centro del botón del emoji para la animación
+            const rect = kissBtn.getBoundingClientRect();
+            const originX = rect.left + rect.width / 2;
+            const originY = rect.top + rect.height / 2;
+
+            // Quitar animación de pulso gentil al interactuar
+            kissBtn.classList.remove('pulse-gentle');
+
+            // Crear explosión de 15 besos y actualizar frase
+            triggerKissExplosion(originX, originY);
+            updatePhrase();
+
+            // Efecto de rebote temporal al presionar
+            kissBtn.style.transform = 'scale(1.25) rotate(-10deg)';
+            setTimeout(() => {
+                kissBtn.style.transform = '';
+            }, 200);
+        }
+
+        // Escuchadores de eventos
+        kissBtn.addEventListener('click', handleKissAction);
+
+        // Inicialización
+        window.addEventListener('DOMContentLoaded', () => {
+            createBackgroundParticles();
+        });
+    </script>
+</body>
